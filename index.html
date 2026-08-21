@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Academy | Computer Science & IT Courses</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg-light: #f8fafc;
+            --text-dark: #334155;
+            --text-muted: #64748b;
+            --white: #ffffff;
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: var(--secondary);
+            color: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--primary-light);
+        }
+
+        /* Main Content SPA Sections */
+        main {
+            flex: 1;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #cbd5e1;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--secondary);
+            font-weight: 700;
+            padding: 0.8rem 1.8rem;
+            border-radius: var(--radius);
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #d97706;
+            color: var(--white);
+        }
+
+        /* Program Cards & Filters */
+        .filter-bar {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--white);
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 4px solid var(--primary-light);
+        }
+
+        .course-card h3 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .course-card .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            background: #e2e8f0;
+            color: var(--text-muted);
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+
+        .course-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* About & Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .feature-box h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        /* Form Styles */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-form {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Navigation -->
+    <header>
+        <nav class="navbar">
+            <a class="logo" onclick="navigateTo('home')">Classic <span>Academy</span></a>
+            <ul class="nav-links">
+                <li><a id="nav-home" class="active" onclick="navigateTo('home')">Home</a></li>
+                <li><a id="nav-courses" onclick="navigateTo('courses')">Programs</a></li>
+                <li><a id="nav-about" onclick="navigateTo('about')">About Us</a></li>
+                <li><a id="nav-contact" onclick="navigateTo('contact')">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="page-section active">
+            <div class="hero">
+                <h1>Master the Digital Future</h1>
+                <p>Welcome to Classic Academy. We offer comprehensive IT, software engineering, design, and business management courses to accelerate your career.</p>
+                <button class="btn" onclick="navigateTo('courses')">Explore All Programs</button>
+            </div>
+
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Featured Diplomas & Certifications</h2>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div>
+                            <span class="tag">Diploma</span>
+                            <h3>DIT (Diploma in Information Technology)</h3>
+                            <p>Complete foundation covering computer basics, office tools, networking, and programming fundamentals.</p>
+                        </div>
+                        <button class="btn" onclick="navigateTo('courses')">Learn More</button>
+                    </div>
+                    <div class="course-card">
+                        <div>
+                            <span class="tag">Development</span>
+                            <h3>Web Development</h3>
+                            <p>Build modern websites using HTML5, CSS3, JavaScript, modern frameworks, and backend technologies.</p>
+                        </div>
+                        <button class="btn" onclick="navigateTo('courses')">Learn More</button>
+                    </div>
+                    <div class="course-card">
+                        <div>
+                            <span class="tag">Design</span>
+                            <h3>Graphic Design</h3>
+                            <p>Master Photoshop, Illustrator, UI/UX concepts, and digital visual communications.</p>
+                        </div>
+                        <button class="btn" onclick="navigateTo('courses')">Learn More</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 2: COURSES / PROGRAMS -->
+        <section id="page-courses" class="page-section">
+            <div class="container">
+                <h1 style="text-align: center; margin-bottom: 1rem;">Academic Programs & Courses</h1>
+                <p style="text-align: center; margin-bottom: 2rem; color: var(--text-muted);">Select a category to filter our specialized offerings.</p>
+
+                <!-- Course Category Filters -->
+                <div class="filter-bar">
+                    <button class="filter-btn active" onclick="filterCourses('all', this)">All Programs</button>
+                    <button class="filter-btn" onclick="filterCourses('it', this)">IT & Diplomas</button>
+                    <button class="filter-btn" onclick="filterCourses('dev', this)">Software & Dev</button>
+                    <button class="filter-btn" onclick="filterCourses('design', this)">Design & Marketing</button>
+                    <button class="filter-btn" onclick="filterCourses('skills', this)">Short Skills</button>
+                </div>
+
+                <div class="courses-grid" id="course-list">
+                    <!-- Diplomas & IT -->
+                    <div class="course-card" data-category="it">
+                        <div>
+                            <span class="tag">Degree Level</span>
+                            <h3>BIT (Bachelor in Information Technology)</h3>
+                            <p>Comprehensive degree program covering computer science theory, systems analysis, databases, and software engineering.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('BIT')">Apply Now</button>
+                    </div>
+
+                    <div class="course-card" data-category="it">
+                        <div>
+                            <span class="tag">Certificate</span>
+                            <h3>CIT (Certificate in Information Technology)</h3>
+                            <p>Short certificate course covering fundamentals of operating systems, hardware basics, and office applications.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('CIT')">Apply Now</button>
+                    </div>
+
+                    <div class="course-card" data-category="it">
+                        <div>
+                            <span class="tag">Diploma</span>
+                            <h3>DIT (Diploma in Information Technology)</h3>
+                            <p>1-year comprehensive diploma program covering IT management, web design, and database development.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('DIT')">Apply Now</button>
+                    </div>
+
+                    <!-- Development -->
+                    <div class="course-card" data-category="dev">
+                        <div>
+                            <span class="tag">Development</span>
+                            <h3>Web Development</h3>
+                            <p>Frontend and backend web training: HTML, CSS, JavaScript, React, Node.js, and database handling.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('Web Development')">Apply Now</button>
+                    </div>
+
+                    <div class="course-card" data-category="dev">
+                        <div>
+                            <span class="tag">Development</span>
+                            <h3>Mobile App Development</h3>
+                            <p>Build cross-platform mobile apps for iOS and Android using Flutter and React Native.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('Mobile Dev')">Apply Now</button>
+                    </div>
+
+                    <!-- Design & Marketing -->
+                    <div class="course-card" data-category="design">
+                        <div>
+                            <span class="tag">Design</span>
+                            <h3>Graphic Design</h3>
+                            <p>Learn visual storytelling, branding, vector illustration, photo editing, and layout design tools.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('Graphic Design')">Apply Now</button>
+                    </div>
+
+                    <div class="course-card" data-category="design">
+                        <div>
+                            <span class="tag">Marketing</span>
+                            <h3>Digital Marketing</h3>
+                            <p>Master SEO, Social Media Marketing (SMM), pay-per-click advertising, and content strategy.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('Digital Marketing')">Apply Now</button>
+                    </div>
+
+                    <div class="course-card" data-category="design">
+                        <div>
+                            <span class="tag">Business</span>
+                            <h3>E-Commerce</h3>
+                            <p>Learn to launch and run online stores using Shopify, Amazon, WooCommerce, and digital supply chains.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('E-Commerce')">Apply Now</button>
+                    </div>
+
+                    <!-- Skills -->
+                    <div class="course-card" data-category="skills">
+                        <div>
+                            <span class="tag">Skill</span>
+                            <h3>Professional Typing</h3>
+                            <p>Speed building, proper finger positioning, accuracy training, and professional document formatting.</p>
+                        </div>
+                        <button class="btn" onclick="applyForCourse('Typing')">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 3: ABOUT US -->
+        <section id="page-about" class="page-section">
+            <div class="container">
+                <h1 style="text-align: center; margin-bottom: 1rem;">About Classic Academy</h1>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; color: var(--text-muted);">
+                    Classic Academy is dedicated to equipping students with practical, industry-relevant computer science and technology skills to thrive in the modern economy.
+                </p>
+
+                <div class="features">
+                    <div class="feature-box">
+                        <h3>Expert Instructors</h3>
+                        <p>Learn directly from industry professionals with real-world tech experience.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Hands-On Labs</h3>
+                        <p>Access high-spec computer labs equipped with up-to-date software and toolkits.</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Career Support</h3>
+                        <p>Receive portfolio reviews, resume guidance, and interview prep assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PAGE 4: CONTACT & INQUIRY -->
+        <section id="page-contact" class="page-section">
+            <div class="container">
+                <h1 style="text-align: center; margin-bottom: 2rem;">Get in Touch</h1>
+
+                <div class="contact-container">
+                    <div>
+                        <h2>Visit Our Campus</h2>
+                        <p style="margin-top: 1rem; color: var(--text-muted);">Have questions regarding course schedules, fees, or certifications? Drop by or leave us a message directly.</p>
+                        
+                        <div style="margin-top: 2rem;">
+                            <p><strong>Address:</strong> Education Corridor, Tech District, Main Campus</p>
+                            <p style="margin-top: 0.5rem;"><strong>Email:</strong> info@classicacademy.edu</p>
+                            <p style="margin-top: 0.5rem;"><strong>Phone:</strong> +1 (555) 019-2834</p>
+                            <p style="margin-top: 0.5rem;"><strong>Hours:</strong> Mon - Sat: 8:00 AM - 8:00 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-form">
+                        <h3>Send an Inquiry</h3>
+                        <form id="inquiry-form" onsubmit="handleFormSubmit(event)">
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" required placeholder="john@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="program">Program of Interest</label>
+                                <select id="program">
+                                    <option value="BIT">BIT</option>
+                                    <option value="CIT">CIT</option>
+                                    <option value="DIT">DIT</option>
+                                    <option value="Typing">Typing</option>
+                                    <option value="Web Development">Web Development</option>
+                                    <option value="Mobile Development">Mobile Development</option>
+                                    <option value="Graphic Design">Graphic Design</option>
+                                    <option value="Digital Marketing">Digital Marketing</option>
+                                    <option value="E-Commerce">E-Commerce</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" rows="4" placeholder="Your questions..."></textarea>
+                            </div>
+                            <button type="submit" class="btn" style="width: 100%;">Submit Inquiry</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Classic Academy. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript Navigation and Functionality -->
+    <script>
+        // Multi-page navigation controller
+        function navigateTo(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Deactivate all nav buttons
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Show selected page
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Highlight nav button
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) {
+                activeNav.classList.add('active');
+            }
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Program category filtering
+        function filterCourses(category, element) {
+            // Update filter button styling
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            // Filter cards
+            const cards = document.querySelectorAll('#course-list .course-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Quick registration redirect handler
+        function applyForCourse(courseName) {
+            navigateTo('contact');
+            const selectElement = document.getElementById('program');
+            if (selectElement) {
+                selectElement.value = courseName;
+            }
+        }
+
+        // Contact Form Submission Handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const program = document.getElementById('program').value;
+            
+            alert(`Thank you, ${name}! Your inquiry for the ${program} program has been received. Our admissions team will contact you shortly.`);
+            document.getElementById('inquiry-form').reset();
+        }
+    </script>
+</body>
+</html>
